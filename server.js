@@ -32,12 +32,7 @@ app.get("/stats", function (req, res) {
 });
 
 app.get("/api/workouts/", (req, res) => {
-  db.Workout.find({}, (err, found) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(found);
-    }
+  db.Workout.find({}, (req, res) => {
   }).then((workouts) => {
     res.json(workouts);
   })
