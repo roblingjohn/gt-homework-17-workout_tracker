@@ -2,5 +2,5 @@
 
 module.exports = {
   Workout: require("./Workout"),
-  Chart: require("./Charts")
+  // Chart: require("./Charts")
 };
