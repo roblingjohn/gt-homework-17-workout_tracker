@@ -1,5 +1,5 @@
 // get all workout data from back-end
-const Chart = require("../models/Charts.js");
+// const Chart = require("../models/Charts.js");
 
 fetch("/api/workouts/range")
   .then(response => {

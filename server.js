@@ -28,6 +28,10 @@ app.get("/exercise", function(req, res) {
   res.sendFile(path.join(__dirname, "/public/exercise.html"));
 });
 
+app.get("/stats", function(req, res) {
+  res.sendFile(path.join(__dirname, "/public/stats.html"));
+});
+
 app.get("/api/workouts/", (req, res) => {
   db.Workout.find({}, (err, found) => {
     if (err) {
@@ -37,6 +41,16 @@ app.get("/api/workouts/", (req, res) => {
     }
   });
 });
+
+app.get("/api/workouts/range", (req, res) => {
+  db.Workout.find({}, (err, found) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(found);
+    }
+  });
+})
 
 app.post("/api/workouts", ({body}, res) => {
   const newWorkout = new db.Workout(body);
@@ -61,7 +75,7 @@ app.put("/api/workouts/:id", (req, res) => {
 }
 )
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouts", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 // db.WorkoutTracker.create({ name: "Workout Tracker" })
 //   .then(dbWorkoutTracker => {

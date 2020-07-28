@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const Chart = new Schema({
+const ChartSchema = new Schema({
     type: {
         type: String
     },
-    
+
 });
 
-// const Book = mongoose.model("Book", BookSchema);
+const Chart = mongoose.model("Chart", ChartSchema);
 
 module.exports = Chart;
