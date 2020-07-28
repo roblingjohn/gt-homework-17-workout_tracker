@@ -43,13 +43,23 @@ app.post("/api/workouts", ({body}, res) => {
 
   db.Workout.create(newWorkout)
     .then(dbWorkout => {
-      console.log(dbWorkout);
       res.json(dbWorkout);
     })
     .catch(err => {
       res.json(err);
     });
 });
+
+app.put("/api/workouts/:id", (req, res) => {
+  db.Workout.update({_id: req.params.id}, req.body)
+  .then(dbWorkout => {
+    res.json(dbWorkout);
+  })
+  .catch(err => {
+    res.json(err);
+  });
+}
+)
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouts", { useNewUrlParser: true });
 
