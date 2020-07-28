@@ -61,7 +61,7 @@ app.put("/api/workouts/:id", (req, res) => {
 }
 )
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workouts", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 // db.WorkoutTracker.create({ name: "Workout Tracker" })
 //   .then(dbWorkoutTracker => {
