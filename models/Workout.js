@@ -33,7 +33,22 @@ const WorkoutSchema = new Schema({
       },
     },
   ],
-});
+  totalDuration: {
+    type: Number,
+    default: 0,
+  },
+},
+{toJSON: {virtuals: true}}
+);
+
+WorkoutSchema.methods.totalWeight = function () {
+  for (i = 0; i < this.exercises.length; i++) {
+    if (this.exercises.weight) {
+      let totalWeight;
+      totalWeight = totalWeight + this.exercises.weight;
+    }
+  }
+};
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
 
