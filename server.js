@@ -1,8 +1,9 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const path = require("path");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const db = require("./models");
 
@@ -15,6 +16,40 @@ app.use(express.json());
 
 
 app.use(express.static("public"));
+
+// require("./routes/api-routes.js")(app);
+// require("./routes/html-routes.js")(app);
+
+app.get("/", function(req, res) {
+  res.sendFile(path.join(__dirname, "/public/index.html"));
+});
+
+app.get("/exercise", function(req, res) {
+  res.sendFile(path.join(__dirname, "/public/exercise.html"));
+});
+
+app.get("/workouts", (req, res) => {
+  db.workouts.find({}, (err, found) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(found);
+    }
+  });
+});
+
+app.post("/submit", ({body}, res) => {
+  const newWorkout = new Workout(body);
+
+  User.create(newWorkout)
+    .then(dbWorkout => {
+      console.log(dbWorkout);
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/populate", { useNewUrlParser: true });
 
