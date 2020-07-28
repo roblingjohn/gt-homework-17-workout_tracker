@@ -38,6 +38,11 @@ app.get("/api/workouts/", (req, res) => {
     } else {
       res.json(found);
     }
+  }).then((workouts) => {
+    res.json(workouts);
+  })
+  .catch((err) => {
+    res.json(err);
   });
 });
 
