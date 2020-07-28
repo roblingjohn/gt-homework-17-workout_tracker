@@ -14,21 +14,20 @@ app.use(logger("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
 app.use(express.static("public"));
 
 // require("./routes/api-routes.js")(app);
 // require("./routes/html-routes.js")(app);
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
-app.get("/exercise", function(req, res) {
+app.get("/exercise", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/exercise.html"));
 });
 
-app.get("/stats", function(req, res) {
+app.get("/stats", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/stats.html"));
 });
 
@@ -50,32 +49,48 @@ app.get("/api/workouts/range", (req, res) => {
       res.json(found);
     }
   });
-})
+});
 
-app.post("/api/workouts", ({body}, res) => {
+app.post("/api/workouts", ({ body }, res) => {
   const newWorkout = new db.Workout(body);
 
   db.Workout.create(newWorkout)
-    .then(dbWorkout => {
+    .then((dbWorkout) => {
       res.json(dbWorkout);
     })
-    .catch(err => {
+    .catch((err) => {
       res.json(err);
     });
 });
 
 app.put("/api/workouts/:id", (req, res) => {
-  db.Workout.update({_id: req.params.id}, req.body)
-  .then(dbWorkout => {
-    res.json(dbWorkout);
-  })
-  .catch(err => {
-    res.json(err);
-  });
-}
-)
+  db.Workout.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      $push: { exercises: req.body },
+      $inc: { totalDuration: req.body.duration },
+    },
+    { new: true }
+  )
+    .then((updatedWorkout) => {
+      res.json(updatedWorkout);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
+  // db.Workout.update({_id: req.params.id}, req.body)
+  // .then(dbWorkout => {
+  //   res.json(dbWorkout);
+  // })
+  // .catch(err => {
+  //   res.json(err);
+  // });
+});
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+  useNewUrlParser: true,
+});
 
 // db.WorkoutTracker.create({ name: "Workout Tracker" })
 //   .then(dbWorkoutTracker => {
